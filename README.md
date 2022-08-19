@@ -197,7 +197,11 @@ Please review the pipeline_new.config under /experiments/reference.
 Below are some augmented images :
 
 
+![contrast](https://user-images.githubusercontent.com/11416834/185696167-232f8af4-a0b0-4bac-9e24-047a5bbd4842.PNG)
 
+![rgb_to_gray](https://user-images.githubusercontent.com/11416834/185696191-581c3de2-fe91-414d-82e7-c1af39ddcaba.PNG)
+
+![brighnes](https://user-images.githubusercontent.com/11416834/185696960-16206da9-8261-42b5-9c2e-00d36a8e1713.PNG)
 
 Results : 
 
@@ -208,5 +212,8 @@ A small part where we can see validation curve:
 
 Validation curve was not present : 
 ![loss2](https://user-images.githubusercontent.com/11416834/185693646-11c98d13-457f-4e91-9237-97174bff4dbf.PNG)
+
+
+Model can still be improved with a larger or more diverse dataset having more number of peds and cyclists . In that case , the hyperparamters can be looked at from the point of view to prioritize a stronger 'generalization' . The trainnig vs validation generelization gap will be better.
 ```
 

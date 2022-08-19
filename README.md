@@ -138,7 +138,7 @@ Finally, you can create a video of your model's inferences for any tf record fil
 python inference_video.py --labelmap_path label_map.pbtxt --model_path experiments/reference/exported/saved_model --tf_record_path /data/waymo/testing/segment-12200383401366682847_2552_140_2572_140_with_camera_labels.tfrecord --config_path experiments/reference/pipeline_new.config --output_path animation.gif
 ```
 
-## Submission Template
+# Submission Template
 
 ### Project overview
 This is the first project from the Udacity - Object Detection in an Urban Environment. In here, we are making use of the Tensorflow/tf2 Object Detection API and model to detect and classify objects as cars/pedestrians/cyclists. Firstly, we make use of the Waymo dataset to parse and import the images from the .tfrecord files and sample them into an appropriate training/validation groups. Secondly, we leverage the SSD ResNEt machine learning model for object detection and finally implement intelligent techniques to modify the hyperparamters with a target to achieving optimal accuracy and loss.

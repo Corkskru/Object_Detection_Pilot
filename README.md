@@ -181,7 +181,7 @@ The validation set should be a mix of classes with more number of cars than peds
 2. You might observe that the validation curves show a small dot even with increased number of epochs. <== Please fix this !!
 3. The validation/evaluation script relies on checkpoints.. but the graph fails to use those and plot an appropriate curve on the tensorboard.
 
-## Considering the above problems - Only the training loss makes sense. Kindly ask Udacity to fix the validation/evaluation steps.
+### Considering the above problems - Only the training loss makes sense. Kindly ask Udacity to fix the validation/evaluation steps.
 
 #### Reference experiment
 The initial training experiment starts the training with a relatively smaller batch size. The combination of smaller batch size and larger step size lead to overfitting . Also, this experiment was with just one augmentation which really did not help Hence I resorted to increasing the batch size to 32 (ended up with reducing the batch size to 8 becuase of workspace problems ).

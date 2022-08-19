@@ -205,12 +205,12 @@ Below are some augmented images :
 
 Results : 
 
-A small part where we can see validation curve:
+A small part where we cannot see validation curve:
 
 ![image](https://user-images.githubusercontent.com/11416834/185692638-50eb72cf-9a15-463f-bd39-15d32a07398f.png)
 
 
-Validation curve was not present : 
+Validation curve was present : 
 ![loss2](https://user-images.githubusercontent.com/11416834/185693646-11c98d13-457f-4e91-9237-97174bff4dbf.PNG)
 
 

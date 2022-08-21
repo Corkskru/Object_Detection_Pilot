@@ -136,25 +136,84 @@ This should create a new folder `experiments/reference/exported/saved_model`. Yo
 Finally, you can create a video of your model's inferences for any tf record file. To do so, run the following command (modify it to your files):
 ```
 python inference_video.py --labelmap_path label_map.pbtxt --model_path experiments/reference/exported/saved_model --tf_record_path /data/waymo/testing/segment-12200383401366682847_2552_140_2572_140_with_camera_labels.tfrecord --config_path experiments/reference/pipeline_new.config --output_path animation.gif
-```
 
-## Submission Template
+
+# Submission Template
 
 ### Project overview
-This section should contain a brief description of the project and what we are trying to achieve. Why is object detection such an important component of self driving car systems?
+This is the first project from the Udacity - Object Detection in an Urban Environment. In here, we are making use of the Tensorflow/tf2 Object Detection API and model to detect and classify objects as cars/pedestrians/cyclists. Firstly, we make use of the Waymo dataset to parse and import the images from the .tfrecord files and sample them into an appropriate training/validation groups. Secondly, we leverage the SSD ResNEt machine learning model for object detection and finally implement intelligent techniques to modify the hyperparamters with a target to achieving optimal accuracy and loss.
 
 ### Set up
-This section should contain a brief description of the steps to follow to run the code for this repository.
+Udacity has provided a workspace setup and also the ideal training and validation splits for our data. Standard instructions can be followed to reproduce the results mentioned in this project.
 
 ### Dataset
 #### Dataset analysis
-This section should contain a quantitative and qualitative description of the dataset. It should include images, charts and other visualizations.
+Below are some steps I followed for a strong EDA:
+
+1. First look or observation of the images from Waymo dataset
+  a. Extract and display random 50 images from the batched dataset(without the groundtruth boxes or labels).
+  b. Make notes for obvious signs - weather / blur / fog / occluions / billboards with cars  etc
+  
+2. Make sure we have the ideal split of images for train/val
+  a. Implement the python notebook with groundtruth boxes and labels 
+  b. Take notes on number of images with cars vs mix of cars/peds/cyclists.
+  c. Udacity already provided a split ... if not, split the images as follows : 
+  	c.a. Images with max num of cars --> filter to training set
+	c.b  Images with mix of classes  --> filter to validation and test sets
+	
+![fog](https://user-images.githubusercontent.com/11416834/185688626-9f3f00f1-f750-424e-8426-9eea7b8e44fd.PNG)
+![occlusion](https://user-images.githubusercontent.com/11416834/185688643-e92d4803-1936-4a93-bb37-bf7f7aed371f.PNG)
+![dark_weather](https://user-images.githubusercontent.com/11416834/185688661-658463bd-5e75-45af-8086-186da9194a95.PNG)
+![rain](https://user-images.githubusercontent.com/11416834/185688685-185e9f5b-d272-4725-a6e5-d727201c3307.PNG)
+
 #### Cross validation
-This section should detail the cross validation strategy and justify your approach.
+The cross validation step depends on the results from EDA. Looking at the statistics of number of cars vs peds vs cyclists .. I will split the dataset 
+as 75:15:10 split for training/val/test. We have some tfrecord files already split up under the /data directory.
+The training set should have the images with max number of cars which is best suited for the training process.
+The validation set should be a mix of classes with more number of cars than peds/cyclists.
+
+
 
 ### Training
+
+### Warning : Problems on Udacity Workspace
+1. The workspace very frequently runs OOM for bigger batch sizes (64/32/16).  
+2. You might observe that the validation curves show a small dot even with increased number of epochs. <== Please fix this !!
+3. The validation/evaluation script relies on checkpoints.. but the graph fails to use those and plot an appropriate curve on the tensorboard.
+
+### Considering the above problems - Only the training loss makes sense. Kindly ask Udacity to fix the validation/evaluation steps.
+
 #### Reference experiment
-This section should detail the results of the reference experiment. It should includes training metrics and a detailed explanation of the algorithm's performances.
+The initial training experiment starts the training with a relatively smaller batch size. The combination of smaller batch size and larger step size lead to overfitting . Also, this experiment was with just one augmentation which really did not help Hence I resorted to increasing the batch size to 32 (ended up with reducing the batch size to 8 becuase of workspace problems ).
 
 #### Improve on the reference
-This section should highlight the different strategies you adopted to improve your model. It should contain relevant figures and details of your findings.
+The EDA helped to identify more number of augmentations especially the below augmentations helped improve the loss.
+1. random_adjust_brightness (for dark/poor lighting conditions)
+2. ramdom_adjust_contrase   (for blur and lighting conditions)
+3. rgbtogray     (standard method to remove the color complexity and better line/edge detection)
+
+Please review the pipeline_new.config under /experiments/reference.
+
+Below are some augmented images :
+
+
+![contrast](https://user-images.githubusercontent.com/11416834/185696167-232f8af4-a0b0-4bac-9e24-047a5bbd4842.PNG)
+
+![rgb_to_gray](https://user-images.githubusercontent.com/11416834/185696191-581c3de2-fe91-414d-82e7-c1af39ddcaba.PNG)
+
+![brighnes](https://user-images.githubusercontent.com/11416834/185696960-16206da9-8261-42b5-9c2e-00d36a8e1713.PNG)
+
+Results : 
+
+A small part where we cannot see validation curve:
+
+![image](https://user-images.githubusercontent.com/11416834/185692638-50eb72cf-9a15-463f-bd39-15d32a07398f.png)
+
+
+Validation curve was present : 
+![loss2](https://user-images.githubusercontent.com/11416834/185693646-11c98d13-457f-4e91-9237-97174bff4dbf.PNG)
+
+
+Model can still be improved with a larger or more diverse dataset having more number of peds and cyclists . In that case , the hyperparamters can be looked at from the point of view to prioritize a stronger 'generalization' . The trainnig vs validation generelization gap will be better.
+```
+
